@@ -1,9 +1,9 @@
-import xs from 'xstream'
-import { div, li } from '@cycle/dom'
+import xs from 'xstream';
+import { div, li } from '@cycle/dom';
 
 export function GroceryItem(sources) {
     const vtree$ = sources.props$
-        .map(item => 
+        .map(item =>
             <li>
                 <span>{item.aisle} - {item.name}</span>
             </li>
@@ -11,5 +11,5 @@ export function GroceryItem(sources) {
 
     return {
         DOM: vtree$,
-    }
+    };
 }
