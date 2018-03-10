@@ -5,29 +5,47 @@ export function Credentials(sources) {
     const username$ = sources.DOM.select('.username')
         .events('input')
         .map(ev => {
-            return ev.target.value;
+            return {
+                type: 'usernameChanged',
+                val: ev.target.value
+            };
         });
 
     const password$ = sources.DOM.select('.password')
         .events('input')
         .map(ev => {
-            return ev.target.value;
-        });
-
-    const state$ = xs.merge(username$, password$)
-        .map((username, password) => {
             return {
-                username: username,
-                password: password
+                type: 'passwordChanged',
+                val: ev.target.value
             };
         });
 
-    const vtree$ = state$
-        .startWith({
+    const state$ = xs.merge(username$, password$)
+        .fold((data, action) => {
+            if (action.type === 'usernameChanged') {
+                return {
+                    ...data,
+                    username: action.val
+                };
+            }
+
+            if (action.type === 'passwordChanged') {
+                return {
+                    ...data,
+                    password: action.val
+                };
+            }
+
+            return {
+                ...data
+            };
+        }, {
             username: '',
             password: ''
-        })
-        .map(data =>
+        });
+
+    const vtree$ = state$
+        .map(({username, password}) =>
             div('', [
                 div('', [
                     label('.username', ['Username']),
@@ -36,8 +54,8 @@ export function Credentials(sources) {
                     h('input.password', {props: {type: 'password'}}),
                 ]),
                 div('', [
-                    p('', [`Username: ${data.username}`]),
-                    p('', [`Password: ${data.password}`]),
+                    p('', [`Username: ${username}`]),
+                    p('', [`Password: ${password}`]),
                 ]),
             ])
             // <div>
