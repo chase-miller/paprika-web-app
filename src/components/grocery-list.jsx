@@ -1,7 +1,6 @@
-import xs from 'xstream'
-import { div, button, ul } from '@cycle/dom'
+import xs from 'xstream';
+import { div, button, ul } from '@cycle/dom';
 import { GroceryItem } from './grocery-item';
-const _ = require('lodash');
 import Collection from '@cycle/collection';
 
 export function GroceryList(sources) {
@@ -21,12 +20,13 @@ export function GroceryList(sources) {
         .flatten()
         .map(res => {
             const result = JSON.parse(res.text).result;
-            return {
-                props$: result
-            };
+            return result.map(r => ({ 
+                id: r.uid,
+                props$: r
+            }));
         });
 
-    const groceryItems$ = Collection(GroceryItem, sources, groceryList$);
+    const groceryItems$ = Collection.gather(GroceryItem, sources, groceryList$);
     const groceryItemsVtrees$ = Collection.pluck(groceryItems$, item => item.DOM);
 
     const vtree$ = groceryItemsVtrees$

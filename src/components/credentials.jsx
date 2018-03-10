@@ -45,17 +45,13 @@ export function Credentials(sources) {
         });
 
     const vtree$ = state$
-        .map(({username, password}) =>
+        .map(() =>
             div('', [
                 div('', [
                     label('.username', ['Username']),
                     h('input.username', {props: {type: 'text'}}),
                     label('.password', ['Password']),
                     h('input.password', {props: {type: 'password'}}),
-                ]),
-                div('', [
-                    p('', [`Username: ${username}`]),
-                    p('', [`Password: ${password}`]),
                 ]),
             ])
         );
