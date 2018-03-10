@@ -58,18 +58,6 @@ export function Credentials(sources) {
                     p('', [`Password: ${password}`]),
                 ]),
             ])
-            // <div>
-            //     <div>
-            //         <label for="username">Username</label>
-            //         <input type="text" class="username"></input>
-            //         <label for="password">Password</label>
-            //         <input type="text" class="password"></input>
-            //     </div>
-            //     <div>
-            //         <p>Username: {data.username}</p>
-            //         <p>Password: {data.password}</p>
-            //     </div>
-            // </div>
         );
 
     return {

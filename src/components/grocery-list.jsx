@@ -8,13 +8,13 @@ export function GroceryList(sources) {
 
     const clicked$ = sources.DOM.select('.refresh-groceries').events('click');
 
-    const getGroceryList$ = xs.merge(clicked$, xs.of(''))
-        .map(() => {
+    const getGroceryList$ = xs.combine(clicked$, sources.creds$)
+        .map(([_, creds]) => {
             return {
-                url: `http://localhost:8080/groceries?user=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+                url: `http://localhost:8080/groceries?user=${encodeURIComponent(creds.username)}&password=${encodeURIComponent(creds.password)}`,
                 category: 'groceryList',
                 method: 'GET'
-            }
+            };
         });
 
     const groceryList$ = sources.HTTP.select('groceryList')
@@ -36,10 +36,10 @@ export function GroceryList(sources) {
                 ul('', vtrees),
                 button('.refresh-groceries', 'Refresh')
             ])
-        )
+        );
     const sinks = {
         DOM: vtree$,
         HTTP: getGroceryList$
-    }
-    return sinks
+    };
+    return sinks;
 }
